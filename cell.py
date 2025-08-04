@@ -51,11 +51,19 @@ class Cell(tk.Button):
     def toggle_flag(self):
         if self.is_revealed:
             return
-        self.is_flagged = not self.is_flagged
-        if self.is_flagged:
+        # Placing a flag
+        if not self.is_flagged:
+            if self.game.flags_left == 0:
+                return  # Prevent placing more flags than available
+            self.is_flagged = True
             self.config(text="F", fg="red", bg="yellow")
+            self.game.flags_left -= 1
+        # Removing a flag
         else:
+            self.is_flagged = False
             self.config(text="", fg="black", bg="#d3d3d3")
+            self.game.flags_left += 1
+        self.game.flag_label.config(text=f"Flags: {self.game.flags_left}")
 
     def reveal(self):
         if self.is_revealed:

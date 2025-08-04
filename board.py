@@ -16,7 +16,6 @@ class Minesweeper(tk.Tk):
         self.grid_cells = [[None for _ in range(size)] for _ in range(size)]
         self.mines_locations = set()
         self.game_over_flag = False
-
         self.create_widgets()
         self.place_mines()
         self.calculate_numbers()
@@ -33,6 +32,13 @@ class Minesweeper(tk.Tk):
             sticky="we",
             pady=(5, 10)
         )
+        self.status_label = tk.Label(self, text="", font=("Arial", 13,"bold"), bg="#e0e0e0", fg="red")
+        self.status_label.grid(row=self.size + 2, column=0, columnspan=self.size, pady=(10, 0))
+
+        self.flags_left = mines
+        self.flag_label = tk.Label(self, text=f"Flags: {self.flags_left}", font=("Arial", 13, "bold"), bg="#e0e0e0")
+        self.flag_label.grid(row=self.size + 1, column=0, columnspan=self.size)
+
 
     def create_widgets(self):
         for x in range(self.size):
@@ -78,7 +84,7 @@ class Minesweeper(tk.Tk):
             cell.show_mine()
             self.game_over_flag = True
             self.show_all_mines()
-            messagebox.showinfo("Game Over", "You clicked on a mine!")
+            self.status_label.config(text="You clicked on a mine!")
             return
 
         if cell.neighbor_mines == 0:
@@ -92,6 +98,7 @@ class Minesweeper(tk.Tk):
 
     def restart_game(self):
         # Destroy all cell buttons
+        self.status_label.config(text="", fg="red")
         for row in self.grid_cells:
             for cell in row:
                 cell.destroy()
@@ -116,4 +123,4 @@ class Minesweeper(tk.Tk):
                 if not cell.is_mine and not cell.is_revealed:
                     return
         self.game_over_flag = True
-        messagebox.showinfo("Congratulations!", "You won!")
+        self.status_label.config(text="Congratulations! You won!", fg="green")
