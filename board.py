@@ -114,6 +114,7 @@ class Minesweeper(tk.Tk):
     def show_all_mines(self):
         for (x, y) in self.mines_locations:
             self.grid_cells[x][y].show_mine()
+            self.disable_all_cells()
 
     def check_win(self):
         # Win if all non-mine cells are revealed
@@ -124,3 +125,9 @@ class Minesweeper(tk.Tk):
                     return
         self.game_over_flag = True
         self.status_label.config(text="Congratulations! You won!", fg="green")
+        self.disable_all_cells()
+
+    def disable_all_cells(self):
+        for row in self.grid_cells:
+            for cell in row:
+                cell.config(state='disabled')
