@@ -64,8 +64,7 @@ class Cell(tk.Button):
         self.config(
             relief="sunken",
             state="disabled",
-            bg="#bbbbbb",  # slightly darker gray
-            disabledforeground="black"
+            bg="#bbbbbb"
         )
         if self.is_mine:
             self.config(
@@ -74,7 +73,8 @@ class Cell(tk.Button):
         elif self.neighbor_mines > 0:
             fg = self.COLORS.get(self.neighbor_mines, "black")
             self.config(
-                text=str(self.neighbor_mines), fg=fg
+                text=str(self.neighbor_mines),
+                disabledforeground=fg  # Use this for color!
             )
         else:
             self.config(text="")
