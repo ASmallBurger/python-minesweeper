@@ -12,3 +12,4 @@ A classic Minesweeper game built with Python and Tkinter.
 
 - GUI with mouse interactions (left-click to reveal, right-click to flag)
 - Win/loss detection
+- Flag counter
