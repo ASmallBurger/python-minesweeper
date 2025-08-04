@@ -106,10 +106,15 @@ class Minesweeper(tk.Tk):
         self.grid_cells = [[None for _ in range(self.size)] for _ in range(self.size)]
         self.mines_locations = set()
         self.game_over_flag = False
+
+        self.flags_left = self.mines
+        self.flag_label.config(text=f"Flags: {self.flags_left}")
+
         # Create new widgets and mines
         self.create_widgets()
         self.place_mines()
         self.calculate_numbers()
+
 
     def show_all_mines(self):
         for (x, y) in self.mines_locations:
