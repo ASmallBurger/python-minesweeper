@@ -1,6 +1,4 @@
-from board import Minesweeper
+from ui import run_app
 
 if __name__ == "__main__":
-    # Change size/mines here for difficulty!
-    app = Minesweeper(size=9, mines=10)
-    app.mainloop()
+    run_app()

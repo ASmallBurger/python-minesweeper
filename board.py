@@ -4,12 +4,11 @@ import random
 from cell import Cell
 
 
-class Minesweeper(tk.Tk):
+class Minesweeper(tk.Frame):
+    def __init__(self, master, size=8, mines=10):
+        super().__init__(master)
 
 
-    def __init__(self, size=8, mines=10):
-        super().__init__()
-        self.title("Minesweeper")
         self.configure(bg="#e0e0e0")
         self.size = size
         self.mines = mines
@@ -119,7 +118,7 @@ class Minesweeper(tk.Tk):
     def show_all_mines(self):
         for (x, y) in self.mines_locations:
             self.grid_cells[x][y].show_mine()
-            self.disable_all_cells()
+        self.disable_all_cells()
 
     def check_win(self):
         # Win if all non-mine cells are revealed
