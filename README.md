@@ -6,10 +6,11 @@ A classic Minesweeper game built with Python and Tkinter.
 
 1. Clone/download this repository.
 2. Run `main.py` (requires Python 3).
-3. Enjoy!
+
 
 ## Features
 
 - GUI with mouse interactions (left-click to reveal, right-click to flag)
 - Win/loss detection
 - Flag counter
+- 3 Difficulty selections
