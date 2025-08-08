@@ -5,49 +5,64 @@ from cell import Cell
 
 
 class Minesweeper(tk.Frame):
-    def __init__(self, master, size=8, mines=10):
+    def __init__(self, master, size=8, mines=10, on_home=None):
         super().__init__(master)
-
-
+        self.on_home = on_home
         self.configure(bg="#e0e0e0")
         self.size = size
         self.mines = mines
         self.grid_cells = [[None for _ in range(size)] for _ in range(size)]
         self.mines_locations = set()
         self.game_over_flag = False
+        top_controls = tk.Frame(self, bg="#e0e0e0")
+        top_controls.grid(row=0, column=0, columnspan=size, sticky="we", pady=(5,10))
         self.create_widgets()
         self.place_mines()
         self.calculate_numbers()
-        self.restart_button = tk.Button(
-            self, text="Restart",
-            font=("Arial", 12, "bold"),
-            command=self.restart_game
-        )
 
-        self.restart_button.grid(
-            row=0,
-            column=0,
-            columnspan=self.size,
-            sticky="we",
-            pady=(5, 10)
+
+        self.restart_button = tk.Button(
+            top_controls, text="Restart", font=("Arial", 10, "bold"), width=7,
+            command=self.restart_game, padx=2, pady=2
         )
-        self.status_label = tk.Label(self, text="", font=("Arial", 13,"bold"), bg="#e0e0e0", fg="red")
-        self.status_label.grid(row=self.size + 2, column=0, columnspan=self.size, pady=(10, 0))
+        self.restart_button.pack(side="left", padx=4)
+
+        self.home_button = tk.Button(
+            top_controls, text="Home", font=("Arial", 10, "bold"), width=7,
+            command=self.go_home, padx=2, pady=2
+        )
+        self.home_button.pack(side="left", padx=4)
 
         self.flags_left = mines
-        self.flag_label = tk.Label(self, text=f"Flags: {self.flags_left}", font=("Arial", 13, "bold"), bg="#e0e0e0")
-        self.flag_label.grid(row=self.size + 1, column=0, columnspan=self.size)
+        self.flag_label = tk.Label(
+            self, text=f"Flags: {self.flags_left}",
+            font=("Arial", 13, "bold"), bg="#e0e0e0"
+        )
+        self.flag_label.grid(row=1, column=0, columnspan=size, pady=(0, 10))
 
+
+
+
+        self.status_label = tk.Label(
+            self, text="", font=("Arial", 13, "bold"),
+            bg="#e0e0e0", fg="red"
+        )
+        self.status_label.grid(row=size+2, column=0, columnspan=size, pady=(10, 0))
 
     def create_widgets(self):
         for x in range(self.size):
             for y in range(self.size):
                 cell = Cell(self, x, y, self)
-                cell.grid(row=x + 1, column=y, padx=1, pady=1)
+                cell.grid(row=x + 2, column=y, padx=1, pady=1)
                 self.grid_cells[x][y] = cell
 
+
+    def go_home(self):
+        self.destroy()
+        if self.on_home:
+            self.on_home()
+
     def place_mines(self):
-        # Random mine placement
         while len(self.mines_locations) < self.mines:
             x = random.randrange(self.size)
             y = random.randrange(self.size)
@@ -96,12 +111,12 @@ class Minesweeper(tk.Frame):
         self.check_win()
 
     def restart_game(self):
-        # Destroy all cell buttons
+
         self.status_label.config(text="", fg="red")
         for row in self.grid_cells:
             for cell in row:
                 cell.destroy()
-        # Reset game state
+
         self.grid_cells = [[None for _ in range(self.size)] for _ in range(self.size)]
         self.mines_locations = set()
         self.game_over_flag = False
@@ -109,10 +124,12 @@ class Minesweeper(tk.Frame):
         self.flags_left = self.mines
         self.flag_label.config(text=f"Flags: {self.flags_left}")
 
-        # Create new widgets and mines
+
         self.create_widgets()
         self.place_mines()
         self.calculate_numbers()
+
+
 
 
     def show_all_mines(self):

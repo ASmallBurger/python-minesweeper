@@ -17,8 +17,8 @@ class Cell(tk.Button):
     def __init__(self, master, x, y, game):
         super().__init__(
             master,
-            width=2, height=1,
-            font=("Arial", 13, "bold"),
+            width=3, height=1,
+            font=("Arial", 12, "bold"),
             bg="#d3d3d3",  # grey for unrevealed
             relief="raised",
             borderwidth=2,

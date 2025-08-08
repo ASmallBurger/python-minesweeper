@@ -29,7 +29,13 @@ def run_app():
     def start_game(size, mines):
         for widget in root.winfo_children():
             widget.destroy()
-        game = Minesweeper(master=root, size=size, mines=mines)
+        def go_home():
+            for w in root.winfo_children():
+                w.destroy()
+            home = HomeScreen(root, start_game)
+            home.pack(fill="both", expand=True)
+
+        game = Minesweeper(master=root, size=size, mines=mines, on_home=go_home)
         game.pack()
     home = HomeScreen(root, start_game)
     home.pack()
