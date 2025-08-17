@@ -19,6 +19,14 @@ class Minesweeper(tk.Frame):
         self.create_widgets()
         self.place_mines()
         self.calculate_numbers()
+        self.timer_label = tk.Label(top_controls, text="Time: 0", font=("Arial", 13, "bold"),
+                                   bg="#e0e0e0", anchor="e", width=10)
+        self.timer_label.pack(side="right", padx=10)
+
+        self.elapsed_time = 0
+        self.timer_running = False
+        self.after_id = None
+        self.start_timer()
 
 
         self.restart_button = tk.Button(
@@ -85,6 +93,24 @@ class Minesweeper(tk.Frame):
                             count += 1
                 cell.neighbor_mines = count
 
+    def start_timer(self):
+        self.timer_running = True
+        self.elapsed_time = 0
+        self.update_timer()
+
+    def update_timer(self):
+        if self.timer_running:
+            mins, secs = divmod(self.elapsed_time, 60)
+            self.timer_label.config(text=f"Time: {mins:02}:{secs:02}")
+            self.elapsed_time += 1
+            self.after_id = self.after(1000, self.update_timer)
+
+    def stop_timer(self):
+        self.timer_running = False
+        if self.after_id:
+            self.after_cancel(self.after_id)
+            self.after_id = None
+
     def reveal_cell(self, x, y):
         if self.game_over_flag:
             return
@@ -99,6 +125,7 @@ class Minesweeper(tk.Frame):
             self.game_over_flag = True
             self.show_all_mines()
             self.status_label.config(text="You clicked on a mine!")
+            self.stop_timer()
             return
 
         if cell.neighbor_mines == 0:
@@ -124,6 +151,10 @@ class Minesweeper(tk.Frame):
         self.flags_left = self.mines
         self.flag_label.config(text=f"Flags: {self.flags_left}")
 
+        self.stop_timer()
+        self.timer_label.config(text="Time: 0")
+        self.start_timer()
+
 
         self.create_widgets()
         self.place_mines()
@@ -147,6 +178,7 @@ class Minesweeper(tk.Frame):
         self.game_over_flag = True
         self.status_label.config(text="Congratulations! You won!", fg="green")
         self.disable_all_cells()
+        self.stop_timer()
 
     def disable_all_cells(self):
         for row in self.grid_cells:
