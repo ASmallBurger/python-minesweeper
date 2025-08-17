@@ -13,3 +13,11 @@ A classic Minesweeper game built with Python and Tkinter.
 - GUI with mouse interactions
 - Flag counter
 - 3 difficulty selections
+- Timer
+- Restart and Home buttons
+
+## Screenshots
+
+![Minesweeper Homepage](img.png)
+
+![Minesweeper in action](img_1.png)
